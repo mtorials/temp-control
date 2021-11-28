@@ -11,5 +11,7 @@ void setup() {
 
 void loop() {
   long seconds = millis() / 500;
-  Serial.println(core.getTemperature(seconds));
+  core.setTime(seconds);
+  Serial.println(core.getTemperature());
+  if (seconds > 20) core.start();
 }

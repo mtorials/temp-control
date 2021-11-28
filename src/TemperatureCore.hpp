@@ -2,38 +2,71 @@
 
 class TemperatureCore
 {
-public:
-  TemperatureCore(TemperatureCurve *curve) {
-    this->curve = curve;
-  };
-  int getTemperature(int t) {
-    TemperatureCurve *c = this->curve;
-    if (t < c->t1) {
-      return c->tmp0;
-    }
-    else if (t < c->rmp1 + c->t1) {
-      return getTmpForRmp(c->tmp0, c->tmp1, c->rmp1, c->t1, t);
-    }
-    else if (t < c->t2 + c->rmp1 + c->t1) {
-      return c->tmp1;
-    }
-    else if (t < c->rmp2 + c->t2 + c->rmp1 + c->t1) {
-      return getTmpForRmp(c->tmp1, c->tmp2, c->rmp2, c->t2 + c->rmp1 + c->t1, t);
-    }
-    else if (t < c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1) {
-      return c->tmp2;
-    }
-    else if (t < c->rmp3 + c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1) {
-      return getTmpForRmp(c->tmp2, 0, c->rmp3, c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1, t);
-    }
-    else {
-      return 0;
-    }
-  };
+
 private:
-  TemperatureCurve * curve;
-  int getTmpForRmp(int from, int to, int in, int starting, int t) {
+  TemperatureCurve *curve;
+  int systemT = 0;
+  bool started = false;
+  int startedAt = 0;
+  int getTmpForRmp(int from, int to, int in, int starting, int t)
+  {
     float m = (to - from) / in;
     return m * (t - starting) + from;
   }
+
+public:
+  TemperatureCore(TemperatureCurve *curve)
+  {
+    this->curve = curve;
+  };
+  void setTime(int t)
+  {
+    this->systemT = t;
+  }
+  void start()
+  {
+    if (this->started)
+      return;
+    this->startedAt = this->systemT;
+    this->started = true;
+  }
+  void stop()
+  {
+    this->started = false;
+  }
+  int getTemperature()
+  {
+    if (!this->started)
+      return 0;
+    int t = this->systemT - this->startedAt;
+    TemperatureCurve *c = this->curve;
+    if (t < c->t1)
+    {
+      return c->tmp0;
+    }
+    else if (t < c->rmp1 + c->t1)
+    {
+      return getTmpForRmp(c->tmp0, c->tmp1, c->rmp1, c->t1, t);
+    }
+    else if (t < c->t2 + c->rmp1 + c->t1)
+    {
+      return c->tmp1;
+    }
+    else if (t < c->rmp2 + c->t2 + c->rmp1 + c->t1)
+    {
+      return getTmpForRmp(c->tmp1, c->tmp2, c->rmp2, c->t2 + c->rmp1 + c->t1, t);
+    }
+    else if (t < c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1)
+    {
+      return c->tmp2;
+    }
+    else if (t < c->rmp3 + c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1)
+    {
+      return getTmpForRmp(c->tmp2, 0, c->rmp3, c->t3 + c->rmp2 + c->t2 + c->rmp1 + c->t1, t);
+    }
+    else
+    {
+      return 0;
+    }
+  };
 };

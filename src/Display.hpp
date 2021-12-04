@@ -28,7 +28,7 @@ private:
     Tft.normalizeTsPoint(p);
     return p;
   }
-  void drawTempCurve(TemperatureCore* core, Point start = {0, 0}, Point end = {200, 100}) {
+  void drawTempCurve(TemperatureCore* core, Point start = {0, 50}, Point end = {200, 100}) {
     TemperatureCurve * curve = core->getTemperatureCurve();
     int tMax = curve->t1 + curve->t2 + curve->t3 + curve->rmp1 + curve->rmp2 + curve->rmp3;
     for (int t = 0; t < tMax; t++) {
@@ -50,9 +50,20 @@ private:
     Tft.print("T_soll: ");
     Tft.print(core->getTemperature());
     Tft.print("C");
-    Tft.println();
+
+    Tft.setCursor(offset, offset+10);
     Tft.print("t = ");
     Tft.print(core->getTime());
+    
+    Tft.setCursor(offset, offset+20);
+    Tft.print("Tmp_0 ");
+    Tft.print(core->getTemperatureCurve()->tmp0);
+    Tft.print("      ");
+    Tft.print("Tmp_1 ");
+    Tft.print(core->getTemperatureCurve()->tmp1);
+    Tft.print("      ");
+    Tft.print("Tmp_2 ");
+    Tft.print(core->getTemperatureCurve()->tmp2);
   }
   void registerButtons() {
 
@@ -74,6 +85,9 @@ public:
   TemperatureCore * getTemperatureCore() {
     return core;
  }
+  ControlUI * getControlUI() {
+    return &controlUI;
+  }
   void begin()
   {
     Tft.begin();

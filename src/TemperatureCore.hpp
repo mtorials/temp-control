@@ -1,8 +1,9 @@
+#pragma once
+
 #include "TemperatureCurve.hpp"
 
 class TemperatureCore
 {
-
 private:
   TemperatureCurve *curve;
   int systemT = 0;
@@ -15,6 +16,14 @@ private:
   }
 
 public:
+  TemperatureCurve* getTemperatureCurve() {
+    return this->curve;
+  };
+  int getMaxTemp() {
+    if (curve->tmp0 > curve->tmp1 && curve->tmp0 > curve->tmp2) return curve->tmp0;
+    else if (curve->tmp1 > curve->tmp2) return curve->tmp1;
+    else return curve->tmp2;
+  }
   TemperatureCore(TemperatureCurve *curve)
   {
     this->curve = curve;
@@ -34,12 +43,15 @@ public:
   {
     this->started = false;
   }
-  int getTemperature()
-  {
+  int getTemperature() {
     if (!this->started)
       return 0;
     int t = this->systemT - this->startedAt;
-    TemperatureCurve *c = this->curve;
+    return getTemperatureForT(t);
+  };
+  int getTemperatureForT(int t)
+  {
+    TemperatureCurve * c = curve;
     if (t < c->t1)
     {
       return c->tmp0;

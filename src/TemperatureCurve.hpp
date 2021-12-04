@@ -15,7 +15,7 @@ struct TemperatureCurve
   //   int getTmp(int t);
 
   int tmp0 = 100;
-  int tmp1 = 500;
+  int tmp1 = 700;
   int tmp2 = 1000;
   int t1 = 10;
   int t2 = 10;

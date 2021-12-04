@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <Waveshare_ILI9486.h>
 #include <TemperatureCurve.hpp>
@@ -8,8 +9,12 @@
 #include "Button.hpp"
 #include "Point.hpp"
 
+#define TOUCH_THRESHOLD 600
+
 #define BLACK 0x0000
 #define BLUE 0x00FA
+
+#define BUTTON_COUNT 1
 
 namespace
 {
@@ -21,8 +26,7 @@ class Display
 private:
   TemperatureCore * core;
   Status * status;
-  short buttonCount = 0;
-  Button buttons[2];
+  Button buttons[BUTTON_COUNT];
   TSPoint getTouchPoint() {
     TSPoint p = Tft.getPoint();
     Tft.normalizeTsPoint(p);
@@ -42,6 +46,7 @@ private:
   void drawTemperatures() {
     int offset = 10;
     Tft.setCursor(offset, offset);
+    Tft.setTextSize(1);
     Tft.print("T: ");
     Tft.print(this->status->currentTempereature);
     Tft.print("C");
@@ -49,15 +54,18 @@ private:
     Tft.print("T_soll: ");
     Tft.print(core->getTemperature());
     Tft.print("C");
+    Tft.println();
+    Tft.print("t = ");
+    Tft.print(core->getTime());
   }
   void registerButtons() {
-    buttons[0] = Button(&Tft, {100, 100}, {50, 50}, []() {
-      Tft.drawRect(100, 100, 100, 100, BLUE);
+    buttons[0] = Button(&Tft, core, {100, 100}, {50, 50}, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
+      tft->drawRect(100, 100, 100, 100, 0xFFFF);
+      core->start();
     }, BLUE, "Start");
-    buttonCount = 1;
   }
   void drawButtons() {
-    for (int i = 0; i < buttonCount; i++) {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
       buttons[i].drawButton();
     }
   }
@@ -66,6 +74,12 @@ public:
     this->core = core;
     this->status = status;
   }
+  Waveshare_ILI9486 * getTft() {
+    return &Tft;
+  }
+  TemperatureCore * getTemperatureCore() {
+    return core;
+ }
   void begin()
   {
     Tft.begin();
@@ -77,7 +91,14 @@ public:
   }
   void loop() {
     TSPoint p = getTouchPoint();
-    Serial.println(p.z);
+    //Serial.println(p.z);
+    if (p.z < 580) return;
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+      if (buttons[i].checkIfPointInButton({p.x, p.y})) {
+        buttons[i].execute();
+        break;
+      }
+    }
   }
   void update() {
     Tft.fillScreen(BLACK);

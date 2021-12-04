@@ -39,6 +39,9 @@ public:
     this->startedAt = this->systemT;
     this->started = true;
   }
+  int getTime() {
+    return this->systemT - this->startedAt;
+  }
   void stop()
   {
     this->started = false;
@@ -46,7 +49,7 @@ public:
   int getTemperature() {
     if (!this->started)
       return 0;
-    int t = this->systemT - this->startedAt;
+    int t = getTime();
     return getTemperatureForT(t);
   };
   int getTemperatureForT(int t)

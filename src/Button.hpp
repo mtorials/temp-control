@@ -5,24 +5,31 @@
 
 #include "Display.hpp"
 #include "Point.hpp"
+#include "Selection.hpp"
+#include "Colors.hpp"
 
 #define LABEL_SIZE 0.9
 
-typedef void OnClick(Waveshare_ILI9486 * tft, TemperatureCore * core);
+struct ButtonContext {
+  TemperatureCore * core;
+  Selection * selection;
+};
+
+typedef void OnClick(Waveshare_ILI9486*, ButtonContext*);
 
 class Button {
 private:
   Waveshare_ILI9486 * tft;
-  TemperatureCore * core;
+  ButtonContext context;  
   OnClick * callback = {};
   Point size = {0, 0};
   Point pos = {0, 0};
   uint16_t color;
   char * label;
 public:
-  Button(Waveshare_ILI9486 * Tft, TemperatureCore * core, Point pos, Point size, OnClick onClick, uint16_t color = 0xAAAA, char * label = "") {
-    this->tft = Tft;
-    this->core = core;
+  Button(Waveshare_ILI9486 * tft, ButtonContext ctx, Point pos, Point size, OnClick onClick, uint16_t color = 0xAAAA, char * label = "") {
+    this->tft = tft;
+    this->context = ctx;
     this->callback = onClick;
     this->size = size;
     this->pos = pos;
@@ -42,6 +49,6 @@ public:
     tft->print(label);
   }
   void execute() {
-    this->callback(tft, core);
+    this->callback(tft, &context);
   }
 };

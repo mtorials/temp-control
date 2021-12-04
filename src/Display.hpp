@@ -6,15 +6,11 @@
 #include <TemperatureCurve.hpp>
 #include "TemperatureCore.hpp"
 #include "Status.hpp"
-#include "Button.hpp"
 #include "Point.hpp"
+#include "Button.hpp"
+#include "ControlUI.hpp"
 
-#define TOUCH_THRESHOLD 600
-
-#define BLACK 0x0000
-#define BLUE 0x00FA
-
-#define BUTTON_COUNT 2
+#define TOUCH_THRESHOLD 520
 
 namespace
 {
@@ -26,7 +22,7 @@ class Display
 private:
   TemperatureCore * core;
   Status * status;
-  Button buttons[BUTTON_COUNT];
+  ControlUI controlUI;
   TSPoint getTouchPoint() {
     TSPoint p = Tft.getPoint();
     Tft.normalizeTsPoint(p);
@@ -59,26 +55,18 @@ private:
     Tft.print(core->getTime());
   }
   void registerButtons() {
-    Point size = {50, 50};
-    Point start = {100, 300};
-    Point pos = start;
-    buttons[0] = Button(&Tft, core, pos, size, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
-      core->start();
-    }, BLUE, "Start");
-    pos = {(short)(start.x + size.x), start.y};
-    buttons[1] = Button(&Tft, core, pos, size, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
-       core->stop();
-    }, BLUE, "Stop");
+
   }
   void drawButtons() {
     for (int i = 0; i < BUTTON_COUNT; i++) {
-      buttons[i].drawButton();
+      controlUI.getButtons()[i].drawButton();
     }
   }
 public:
   Display(TemperatureCore * core, Status * status) {
     this->core = core;
     this->status = status;
+    this->controlUI = ControlUI(&Tft, core);
   }
   Waveshare_ILI9486 * getTft() {
     return &Tft;
@@ -100,8 +88,8 @@ public:
     //Serial.println(p.z);
     if (p.z < 580) return;
     for (int i = 0; i < BUTTON_COUNT; i++) {
-      if (buttons[i].checkIfPointInButton({p.x, p.y})) {
-        buttons[i].execute();
+      if (controlUI.getButtons()[i].checkIfPointInButton({p.x, p.y})) {
+        controlUI.getButtons()[i].execute();
         Tft.fillScreen(0xFFFF);
         update();
         break;

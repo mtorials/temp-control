@@ -14,7 +14,7 @@
 #define BLACK 0x0000
 #define BLUE 0x00FA
 
-#define BUTTON_COUNT 1
+#define BUTTON_COUNT 2
 
 namespace
 {
@@ -59,10 +59,16 @@ private:
     Tft.print(core->getTime());
   }
   void registerButtons() {
-    buttons[0] = Button(&Tft, core, {100, 100}, {50, 50}, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
-      tft->drawRect(100, 100, 100, 100, 0xFFFF);
+    Point size = {50, 50};
+    Point start = {100, 300};
+    Point pos = start;
+    buttons[0] = Button(&Tft, core, pos, size, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
       core->start();
     }, BLUE, "Start");
+    pos = {(short)(start.x + size.x), start.y};
+    buttons[1] = Button(&Tft, core, pos, size, [](Waveshare_ILI9486 * tft, TemperatureCore * core) {
+       core->stop();
+    }, BLUE, "Stop");
   }
   void drawButtons() {
     for (int i = 0; i < BUTTON_COUNT; i++) {
@@ -96,6 +102,8 @@ public:
     for (int i = 0; i < BUTTON_COUNT; i++) {
       if (buttons[i].checkIfPointInButton({p.x, p.y})) {
         buttons[i].execute();
+        Tft.fillScreen(0xFFFF);
+        update();
         break;
       }
     }

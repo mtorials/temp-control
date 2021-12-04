@@ -22,6 +22,7 @@ private:
 public:
   Button(Waveshare_ILI9486 * Tft, TemperatureCore * core, Point pos, Point size, OnClick onClick, uint16_t color = 0xAAAA, char * label = "") {
     this->tft = Tft;
+    this->core = core;
     this->callback = onClick;
     this->size = size;
     this->pos = pos;

@@ -33,17 +33,18 @@ void setup() {
   mcp.setThermocoupleType(MCP9600_TYPE_S);
   mcp.setFilterCoefficient(3);
   mcp.enable(true);
-  core.start();
+  //core.start();
 }
 
 Status oldStatus;
 int oldTime;
 
 void loop() {
+  core.setTime(millis() / 1000);
   status.currentTempereature = mcp.readThermocouple();
   if (
     oldStatus.currentTempereature != status.currentTempereature ||
-    core.getTime() != oldTime
+    (core.getTime() != oldTime)
   ) {
     Serial.println(status.currentTempereature);
     display.update();
@@ -51,5 +52,5 @@ void loop() {
   display.loop();
   oldStatus = status;
   oldTime = core.getTime();
-  Serial.print(core.getTime());
+  //Serial.print(core.getTime());
 }

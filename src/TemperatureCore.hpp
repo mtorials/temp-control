@@ -19,6 +19,9 @@ public:
   TemperatureCurve* getTemperatureCurve() {
     return this->curve;
   };
+  bool running() {
+    return started;
+  }
   int getMaxTemp() {
     if (curve->tmp0 > curve->tmp1 && curve->tmp0 > curve->tmp2) return curve->tmp0;
     else if (curve->tmp1 > curve->tmp2) return curve->tmp1;
@@ -40,6 +43,7 @@ public:
     this->started = true;
   }
   int getTime() {
+    if (!started) return 0;
     return this->systemT - this->startedAt;
   }
   void stop()

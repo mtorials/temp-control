@@ -3,20 +3,21 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <Waveshare_ILI9486.h>
-#include <TemperatureCurve.hpp>
+#include "TemperatureCurve.hpp"
 #include "TemperatureCore.hpp"
 #include "Status.hpp"
 #include "Button.hpp"
 #include "Point.hpp"
+#include "EditStatus.hpp"
 
-#define BUTTON_COUNT 7
+#define BUTTON_COUNT 5
 
-class ControlUI {
+class ControlUI
+{
 private:
-  Button buttons[BUTTON_COUNT];
-  EditableValues currentlyEditing = EditableValues::Tmp0;
-  char * editing = "-";
-  ValueGetter * getValue = [](EditableValues type, TemperatureCurve * curve) -> int * {
+  Button *buttons;
+  ValueGetter *valueGetter = [](EditableValues type, TemperatureCurve *curve) -> int *
+  {
     Serial.println(type);
     switch (type)
     {
@@ -44,74 +45,40 @@ private:
       return &(curve->t3);
       Serial.println("t3");
       break;
+    case Rmp1:
+      return &(curve->rmp1);
+      Serial.println("rmp1");
+      break;
+    case Rmp2:
+      return &(curve->rmp2);
+      Serial.println("rmp2");
+      break;
+    case Rmp3:
+      return &(curve->rmp3);
+      Serial.println("rmp3");
+      break;
 
     default:
       Serial.println("ERROR");
       break;
     }
   };
+
+  ButtonContext *context = nullptr;
+
 public:
-  Button * getButtons() {
+  ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core);
+
+  Button *getButtons()
+  {
     return buttons;
   }
-  ControlUI() {}
-  ControlUI(Waveshare_ILI9486 * tft, TemperatureCore * core) {
-    Point size = {50, 50};
-    Point start = {50, 200};
-    short posY = start.y;
-    short posX = start.x;
-    short offset = 5;
 
-    ButtonContext context = {
-      core,
-      &currentlyEditing,
-      getValue
-    };
-
-    // Selection
-    posX = start.x;
-    buttons[0] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      *(ctx->currentEdit) = EditableValues::Tmp0;
-    }, "Tmp0", [](ButtonContext * ctx) -> bool {
-      return (*ctx->currentEdit) == EditableValues::Tmp0;
-    });
-    posX += offset + size.x;
-    buttons[1] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      *(ctx->currentEdit) = EditableValues::Tmp1;
-    }, "Tmp1", [](ButtonContext * ctx) -> bool {
-      return (*ctx->currentEdit) == EditableValues::Tmp1;
-    });
-    posX += offset + size.x;
-    buttons[6] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      *(ctx->currentEdit) = EditableValues::Tmp2;
-    }, "Tmp2", [](ButtonContext * ctx) -> bool {
-      return (*ctx->currentEdit) == EditableValues::Tmp2;
-    });
-
-    // Add and Clear
-    posY += size.y + offset;
-    posX = start.x;
-    buttons[2] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      *(ctx->changeValue(*(ctx->currentEdit), ctx->core->getTemperatureCurve())) += 100;
-    }, "+100");
-    posX += offset + size.x;
-    buttons[3] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      Serial.println(*(ctx->currentEdit));
-      *(ctx->changeValue(*(ctx->currentEdit), ctx->core->getTemperatureCurve())) = 0;
-    }, "Clear");
-
-    // Start/Stop
-    posY += size.y + offset;
-    posX = start.x;
-    buttons[4] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      ctx->core->start();
-    }, "Start");
-    posX += offset + size.x;
-    buttons[5] = Button(tft, context, {posX, posY}, size, [](Waveshare_ILI9486 * tft, ButtonContext * ctx) {
-      ctx->core->stop();
-    }, "Stop");
+  EditStatus *getEditStatus()
+  {
+    return currentlyEditing;
   }
-  EditableValues * getCurrentlyEditing() {
-    return &currentlyEditing;
-  }
+
+public:
+  EditStatus *currentlyEditing = new EditStatus(EditableValues::Tmp0);
 };

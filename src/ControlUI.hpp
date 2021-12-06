@@ -9,13 +9,17 @@
 #include "Button.hpp"
 #include "Point.hpp"
 #include "EditStatus.hpp"
+#include <vector>
 
-#define BUTTON_COUNT 13
+using namespace std;
+
+#define BUTTON_COUNT 16
 
 class ControlUI
 {
 private:
-  Button *buttons;
+  vector<Button> buttons;
+  //Button *buttons;
   ValueGetter *valueGetter = [](EditableValues type, TemperatureCurve *curve) -> int *
   {
     Serial.println(type);
@@ -69,7 +73,7 @@ private:
 public:
   ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core);
 
-  Button *getButtons()
+  vector<Button> getButtons()
   {
     return buttons;
   }

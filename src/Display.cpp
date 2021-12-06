@@ -10,7 +10,7 @@ TSPoint Display::getTouchPoint()
 
 void Display::drawTempCurve(TemperatureCore *core)
 {
-  Point start = {0, 50};
+  Point start = {0, 80};
   Point end = {Tft.LCD_WIDTH, 150};
   TemperatureCurve *curve = core->getTemperatureCurve();
   int tMax = curve->t1 + curve->t2 + curve->t3 + curve->rmp1 + curve->rmp2 + curve->rmp3;
@@ -20,7 +20,7 @@ void Display::drawTempCurve(TemperatureCore *core)
     int y = ((float)core->getTemperatureForT(t) / (float)core->getMaxTemp()) * (end.y - start.y);
     // flip y axis
     y = end.y - y;
-    Tft.drawRect(x, y, 4, 4, 0xFFFF);
+    Tft.fillRect(x, y, 4, 4, 0xFFFF);
   }
 }
 
@@ -50,13 +50,48 @@ void Display::drawTemperatures()
   Tft.print("      ");
   Tft.print("Tmp_2 ");
   Tft.print(core->getTemperatureCurve()->tmp2);
+
+  Tft.setCursor(offset, offset + 30);
+  Tft.print("t_1 ");
+  Tft.print(core->getTemperatureCurve()->t1);
+  Tft.print("      ");
+  Tft.print("T_2 ");
+  Tft.print(core->getTemperatureCurve()->t2);
+  Tft.print("      ");
+  Tft.print("t_3 ");
+  Tft.print(core->getTemperatureCurve()->t3);
+
+  Tft.setCursor(offset, offset + 40);
+  Tft.print("rmp_1 ");
+  Tft.print(core->getTemperatureCurve()->rmp1);
+  Tft.print("      ");
+  Tft.print("rmp_2 ");
+  Tft.print(core->getTemperatureCurve()->rmp2);
+  Tft.print("      ");
+  Tft.print("rmp_3 ");
+  Tft.print(core->getTemperatureCurve()->rmp3);
+
+  Tft.setCursor(offset, Tft.LCD_HEIGHT - 20);
+  if (core->running())
+  {
+    Tft.print("Runnung. Time remaining: ");
+    Tft.print(core->getRemainingTime());
+  }
+  else
+  {
+    Tft.print("Ready.");
+  }
 }
 
 void Display::drawButtons()
 {
-  for (int i = 0; i < BUTTON_COUNT; i++)
+  /*for (int i = 0; i < BUTTON_COUNT; i++)
   {
     controlUI->getButtons()[i].drawButton();
+  }*/
+  for (auto btn : controlUI->getButtons())
+  {
+    btn.drawButton();
   }
 }
 

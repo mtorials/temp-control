@@ -2,11 +2,12 @@
 #include "Colors.hpp"
 
 Button::Button(
-    Waveshare_ILI9486 *tft, ButtonContext *context, Point pos, Point size, OnClick onClick, char *label, ActivityChecker activityChecker = [](ButtonContext *) -> bool
+    Waveshare_ILI9486 *tft, ButtonContext *context, Point pos, Point size, OnClick onClick, char *label, uint16_t color, ActivityChecker activityChecker = [](ButtonContext *) -> bool
     { return false; })
 {
   this->tft = tft;
   this->context = context;
+  this->color = color;
   this->callback = onClick;
   this->ac = activityChecker;
   this->size = size;
@@ -28,7 +29,7 @@ bool Button::checkIfPointInButton(Point point)
 
 void Button::drawButton()
 {
-  uint16_t c = BTN_COLOR;
+  uint16_t c = color;
   if (ac(context))
     c = BTN_COLOR_ACTIVE;
   tft->fillRect(pos.x, pos.y, size.x, size.y, c);

@@ -62,8 +62,12 @@ int TemperatureCore::getTemperatureForT(int t)
     return 0;
 }
 
+int TemperatureCore::getDuration()
+{
+  return (curve->t1 + curve->t2 + curve->t3 + curve->rmp1 + curve->rmp2 + curve->rmp3);
+}
+
 int TemperatureCore::getRemainingTime()
 {
-  int sum = (curve->t1 + curve->t2 + curve->t3 + curve->rmp1 + curve->rmp2 + curve->rmp3);
-  return sum - getTime();
+  return getDuration() - getTime();
 }

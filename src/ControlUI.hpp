@@ -13,8 +13,6 @@
 
 using namespace std;
 
-#define BUTTON_COUNT 16
-
 class ControlUI
 {
 private:

@@ -11,6 +11,7 @@
 #include "Status.hpp"
 
 #define I2C_ADDRESS (0x67)
+#define MILLIS_IN_ONE_MIN 60000
 
 Adafruit_MCP9600 mcp;
 
@@ -45,7 +46,7 @@ int oldTime = core.getTime();
 
 void loop()
 {
-  core.setTime(millis() / 1000);
+  core.setTime(millis() / MILLIS_IN_ONE_MIN);
   status.currentTempereature = mcp.readThermocouple();
   if (
       oldStatus.currentTempereature != status.currentTempereature ||

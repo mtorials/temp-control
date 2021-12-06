@@ -9,8 +9,7 @@
 #include "Point.hpp"
 #include "Button.hpp"
 #include "ControlUI.hpp"
-
-#define TOUCH_THRESHOLD 150
+#include "defs.hpp"
 
 namespace
 {

@@ -1,18 +1,34 @@
 #pragma once
 
-#include "EditableValues.hpp"
+enum EditableValues
+{
+  Tmp0,
+  Tmp1,
+  Tmp2,
+  Rmp1,
+  Rmp2,
+  Rmp3,
+  T1,
+  T2,
+  T3
+};
 
-class EditStatus {
+class EditStatus
+{
 private:
   EditableValues currentlyEditing;
+
 public:
-  EditStatus(EditableValues initalValue) {
+  EditStatus(EditableValues initalValue)
+  {
     currentlyEditing = initalValue;
   }
-  EditableValues getValue() {
+  EditableValues getValue()
+  {
     return currentlyEditing;
   }
-  void setValue(EditableValues newValue) {
+  void setValue(EditableValues newValue)
+  {
     currentlyEditing = newValue;
   }
 };

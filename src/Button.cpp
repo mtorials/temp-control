@@ -32,10 +32,15 @@ void Button::drawButton()
   uint16_t c = color;
   if (ac(context))
     c = BTN_COLOR_ACTIVE;
-  tft->fillRect(pos.x, pos.y, size.x, size.y, c);
-  tft->setCursor(pos.x, pos.y + pos.y / size.y);
-  tft->setTextSize(LABEL_SIZE);
-  tft->print(label);
+  //redraw buttons only if colors (active state) changes
+  if (c != colorCurr)
+  {
+    tft->fillRect(pos.x, pos.y, size.x, size.y, c);
+    tft->setCursor(pos.x, pos.y + pos.y / size.y);
+    tft->setTextSize(LABEL_SIZE);
+    tft->print(label);
+    colorCurr = c;
+  }
 }
 
 void Button::execute()

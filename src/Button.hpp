@@ -5,16 +5,14 @@
 
 #include "Point.hpp"
 #include "ButtonContext.hpp"
-
-#define LABEL_SIZE 0.9
-
-#define BTN_COLOR_ACTIVE 0xF000
+#include "defs.hpp"
 
 class Button
 {
 private:
   Waveshare_ILI9486 *tft;
   uint16_t color;
+  uint16_t colorCurr;
   ButtonContext *context;
   OnClick *callback = {};
   ActivityChecker *ac;

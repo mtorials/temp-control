@@ -5,7 +5,7 @@
 ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
 {
   Point size = {50, 50};
-  Point start = {25, 220};
+  Point start = {25, 215};
   short posY = start.y;
   short posX = start.x;
   short offset = 5;
@@ -32,7 +32,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           {
             ctx->currentEdit->setValue(EditableValues::Tmp0);
           },
-          "Tmp0", BLUE,
+          "Tmp_0", BLUE,
           [](ButtonContext *ctx) -> bool
           {
             return ctx->currentEdit->getValue() == EditableValues::Tmp0;
@@ -46,7 +46,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           {
             ctx->currentEdit->setValue(EditableValues::Tmp1);
           },
-          "Tmp1", BLUE,
+          "Tmp_1", BLUE,
           [](ButtonContext *ctx) -> bool
           {
             return ctx->currentEdit->getValue() == EditableValues::Tmp1;
@@ -60,7 +60,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           {
             ctx->currentEdit->setValue(EditableValues::Tmp2);
           },
-          "Tmp2", BLUE,
+          "Tmp_2", BLUE,
           [](ButtonContext *ctx) -> bool
           {
             return ctx->currentEdit->getValue() == EditableValues::Tmp2;
@@ -72,7 +72,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::T1); },
-          "T1", BLUE_DARK, [](ButtonContext *ctx) -> bool
+          "t_1", BLUE_DARK, [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::T1; }));
   posX += offset + size.x;
   buttons.push_back(
@@ -81,7 +81,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::T2); },
-          "T2", BLUE_DARK, [](ButtonContext *ctx) -> bool
+          "t_2", BLUE_DARK, [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::T2; }));
 
   posY += size.y + offset;
@@ -92,7 +92,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::T3); },
-          "T3", BLUE_DARK, [](ButtonContext *ctx) -> bool
+          "t_3", BLUE_DARK, [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::T3; }));
 
   posX += offset + size.x;
@@ -102,7 +102,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::Rmp1); },
-          "Rmp1", BLUE_LIGHT, [](ButtonContext *ctx) -> bool
+          "rmp_1", BLUE_LIGHT, [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::Rmp1; }));
   posX += offset + size.x;
   buttons.push_back(
@@ -111,7 +111,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::Rmp2); },
-          "Rmp2", BLUE_LIGHT, [](ButtonContext *ctx) -> bool
+          "rmp_2", BLUE_LIGHT, [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::Rmp2; }));
   posX += offset + size.x;
   buttons.push_back(
@@ -120,7 +120,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
           { ctx->currentEdit->setValue(EditableValues::Rmp3); },
-          "Rmp3", BLUE_LIGHT,
+          "rmp_3", BLUE_LIGHT,
           [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::Rmp3; }));
 
@@ -175,7 +175,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           {
             *(ctx->changeValue(ctx->currentEdit->getValue(), ctx->core->getTemperatureCurve())) = 0;
           },
-          "Clear", GREEN));
+          "0", GREEN));
 
   //Start / Stop
   posY += size.y + offset;

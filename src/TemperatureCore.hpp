@@ -41,5 +41,6 @@ public:
 
   int getTemperature();
   int getTemperatureForT(int t);
+  int getDuration();
   int getRemainingTime();
 };

@@ -10,7 +10,7 @@
 #include "Point.hpp"
 #include "EditStatus.hpp"
 
-#define BUTTON_COUNT 5
+#define BUTTON_COUNT 13
 
 class ControlUI
 {

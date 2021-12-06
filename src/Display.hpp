@@ -10,7 +10,7 @@
 #include "Button.hpp"
 #include "ControlUI.hpp"
 
-#define TOUCH_THRESHOLD 350
+#define TOUCH_THRESHOLD 150
 
 namespace
 {

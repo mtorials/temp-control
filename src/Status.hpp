@@ -1,5 +1,7 @@
 #pragma once
 
-struct Status {
+struct Status
+{
   int currentTempereature = 0;
+  bool heating = false;
 };

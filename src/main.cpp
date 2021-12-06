@@ -24,6 +24,8 @@ Display display(&core, &status);
 void setup()
 {
   Serial.begin(9600);
+  pinMode(OUTPUT_PIN, OUTPUT);
+  digitalWrite(OUTPUT_PIN, LOW);
   SPI.begin();
   display.begin();
   if (!mcp.begin(I2C_ADDRESS))
@@ -44,12 +46,26 @@ void setup()
 Status oldStatus = status;
 int oldTime = core.getTime();
 
+void manageTemperature()
+{
+  int delta = (status.currentTempereature - core.getTemperature());
+  if (delta > 0)
+  {
+    status.heating = false;
+  }
+  if (delta < -TEMP_THRESHOLD)
+  {
+    status.heating = true;
+  }
+}
+
 void loop()
 {
   core.setTime(millis() / MILLIS_IN_ONE_MIN);
   status.currentTempereature = mcp.readThermocouple();
   if (
       oldStatus.currentTempereature != status.currentTempereature ||
+      oldStatus.heating != status.heating ||
       (core.getTime() != oldTime))
   {
     Serial.println(status.currentTempereature);
@@ -58,7 +74,18 @@ void loop()
   display.loop();
   oldStatus = status;
   oldTime = core.getTime();
-  //Serial.println(display.getControlUI()->getEditStatus()->getValue());
-  //Serial.println((long)display.getControlUI()->getEditStatus());
-  //Serial.print(core.getTime());
+  if (core.running())
+    manageTemperature();
+  else
+  {
+    status.heating = false;
+  }
+  if (status.heating)
+  {
+    digitalWrite(OUTPUT_PIN, HIGH);
+  }
+  else
+  {
+    digitalWrite(OUTPUT_PIN, LOW);
+  }
 }

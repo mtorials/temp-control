@@ -47,16 +47,25 @@ void Display::drawTemperatures()
   //draw temps
   Tft.setCursor(offset, offset);
   Tft.setTextSize(1);
-  Tft.print("T: ");
+  Tft.print("Tmp: ");
   Tft.print(this->status->currentTempereature);
   Tft.print("C");
-  Tft.setCursor(offset + 100, offset);
-  Tft.print("T_soll: ");
+  Tft.setCursor(offset + spacing, offset);
+  Tft.print("T_set: ");
   Tft.print(core->getTemperature());
   Tft.print("C");
+  Tft.setCursor(offset + 2 * spacing, offset);
+  if (status->heating)
+  {
+    Tft.print("Heating...");
+  }
+  else
+  {
+    Tft.print("-");
+  }
 
   Tft.setCursor(offset, offset + 10);
-  Tft.print("t = ");
+  Tft.print("t: ");
   Tft.print(core->getTime());
   Tft.print("min");
   Tft.setCursor(offset + spacing, offset + 10);
@@ -65,34 +74,43 @@ void Display::drawTemperatures()
   Tft.print("min");
 
   Tft.setCursor(offset, offset + 20);
-  Tft.print("Tmp_0 ");
+  Tft.print("Tmp_0: ");
   Tft.print(core->getTemperatureCurve()->tmp0);
+  Tft.print("C");
   Tft.setCursor(offset + spacing, offset + 20);
-  Tft.print("Tmp_1 ");
+  Tft.print("Tmp_1: ");
   Tft.print(core->getTemperatureCurve()->tmp1);
+  Tft.print("C");
   Tft.setCursor(offset + 2 * spacing, offset + 20);
-  Tft.print("Tmp_2 ");
+  Tft.print("Tmp_2: ");
   Tft.print(core->getTemperatureCurve()->tmp2);
+  Tft.print("C");
 
   Tft.setCursor(offset, offset + 30);
-  Tft.print("t_1 ");
+  Tft.print("t_1: ");
   Tft.print(core->getTemperatureCurve()->t1);
+  Tft.print("min");
   Tft.setCursor(offset + spacing, offset + 30);
-  Tft.print("t_2 ");
+  Tft.print("t_2: ");
   Tft.print(core->getTemperatureCurve()->t2);
+  Tft.print("min");
   Tft.setCursor(offset + 2 * spacing, offset + 30);
-  Tft.print("t_3 ");
+  Tft.print("t_3: ");
   Tft.print(core->getTemperatureCurve()->t3);
+  Tft.print("min");
 
   Tft.setCursor(offset, offset + 40);
-  Tft.print("rmp_1 ");
+  Tft.print("rmp_1: ");
   Tft.print(core->getTemperatureCurve()->rmp1);
+  Tft.print("min");
   Tft.setCursor(offset + spacing, offset + 40);
-  Tft.print("rmp_2 ");
+  Tft.print("rmp_2: ");
   Tft.print(core->getTemperatureCurve()->rmp2);
+  Tft.print("min");
   Tft.setCursor(offset + spacing * 2, offset + 40);
-  Tft.print("rmp_3 ");
+  Tft.print("rmp_3: ");
   Tft.print(core->getTemperatureCurve()->rmp3);
+  Tft.print("min");
 
   //clear bottom text
   Tft.fillRect(0, Tft.LCD_HEIGHT - 20, Tft.LCD_WIDTH, 20, BG_COLOR);

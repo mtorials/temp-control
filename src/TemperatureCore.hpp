@@ -1,14 +1,18 @@
 #pragma once
 
 #include "TemperatureCurve.hpp"
+#include "DataLogger.hpp"
 
 class TemperatureCore
 {
 private:
-  TemperatureCurve *curve;
+  TemperatureCurve *curve = nullptr;
+  DataLogger *dataLogger = nullptr;
   int systemT = 0;
   bool started = false;
   int startedAt = 0;
+
+private:
   int getTmpForRmp(int from, int to, int in, int starting, int t)
   {
     float m = (to - from) / in;
@@ -19,6 +23,12 @@ public:
   TemperatureCore(TemperatureCurve *curve)
   {
     this->curve = curve;
+    this->dataLogger = new DataLogger(getDuration());
+  }
+
+  DataLogger *getDataLogger()
+  {
+    this->dataLogger;
   }
 
   TemperatureCurve *getTemperatureCurve()

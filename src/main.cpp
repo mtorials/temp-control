@@ -16,10 +16,10 @@
 Adafruit_MCP9600 mcp;
 
 TemperatureCurve curve;
-TemperatureCore core = TemperatureCore(&curve);
+TemperatureCore *core;
 
 Status status;
-Display display(&core, &status);
+Display *display;
 
 void setup()
 {
@@ -27,7 +27,7 @@ void setup()
   pinMode(OUTPUT_PIN, OUTPUT);
   digitalWrite(OUTPUT_PIN, LOW);
   SPI.begin();
-  display.begin();
+
   if (!mcp.begin(I2C_ADDRESS))
   {
     Serial.println("Sensor not found. Check wiring!");
@@ -39,16 +39,25 @@ void setup()
   mcp.setThermocoupleType(MCP9600_TYPE_S);
   mcp.setFilterCoefficient(3);
   mcp.enable(true);
-  //display.update();
-  //core.start();
+  // display.update();
+  // core.start();
+
+  core = new TemperatureCore(&curve);
+  display = new Display(core, &status);
+
+  display->begin();
+
+  Serial.println();
+  Serial.println(core->getDataLogger() != nullptr);
+  Serial.println();
 }
 
 Status oldStatus = status;
-int oldTime = core.getTime();
+int oldTime = core->getTime();
 
 void manageTemperature()
 {
-  int delta = (status.currentTempereature - core.getTemperature());
+  int delta = (status.currentTempereature - core->getTemperature());
   if (delta > 0)
   {
     status.heating = false;
@@ -61,21 +70,28 @@ void manageTemperature()
 
 void loop()
 {
-  core.setTime(millis() / MILLIS_IN_ONE_MIN);
+  core->setTime(millis() / MILLIS_IN_ONE_MIN);
   status.currentTempereature = mcp.readThermocouple();
   if (
       oldStatus.currentTempereature != status.currentTempereature ||
       oldStatus.heating != status.heating ||
-      (core.getTime() != oldTime))
+      (core->getTime() != oldTime))
   {
     Serial.println(status.currentTempereature);
-    display.update();
+    display->update();
   }
-  display.loop();
+  display->loop();
   oldStatus = status;
-  oldTime = core.getTime();
-  if (core.running())
+  oldTime = core->getTime();
+  if (core->running())
+  {
     manageTemperature();
+    // Log data
+    if (status.currentTempereature != oldStatus.currentTempereature)
+    {
+      core->getDataLogger()->setTempForT(core->getTime(), status.currentTempereature);
+    }
+  }
   else
   {
     status.heating = false;

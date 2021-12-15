@@ -1,4 +1,6 @@
 #include "TemperatureCore.hpp"
+#include "DataLogger.hpp"
+#include <Arduino.h>
 
 int TemperatureCore::getMaxTemp()
 {
@@ -28,6 +30,7 @@ void TemperatureCore::start()
     return;
   this->startedAt = this->systemT;
   this->started = true;
+  this->getDataLogger()->reset();
 }
 
 void TemperatureCore::stop()
@@ -69,5 +72,10 @@ int TemperatureCore::getDuration()
 
 int TemperatureCore::getRemainingTime()
 {
-  return getDuration() - getTime();
+  int r = getDuration() - getTime();
+  if (r < 0)
+  {
+    return 0;
+  }
+  return r;
 }

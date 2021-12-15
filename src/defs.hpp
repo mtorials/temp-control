@@ -7,3 +7,4 @@
 #define TEMP_THRESHOLD 10
 
 #define LABEL_SIZE 0.9
+#define LOG_GRAPH_MARGIN 10

@@ -9,6 +9,7 @@
 #include "Point.hpp"
 #include "Button.hpp"
 #include "ControlUI.hpp"
+#include "DataLogger.hpp"
 #include "defs.hpp"
 
 namespace

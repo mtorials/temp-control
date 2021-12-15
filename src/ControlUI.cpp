@@ -123,8 +123,21 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "rmp_3", BLUE_LIGHT,
           [](ButtonContext *ctx) -> bool
           { return ctx->currentEdit->getValue() == EditableValues::Rmp3; }));
+  posX += offset + size.x;
+  buttons.push_back(
+      //buttons[15] =
+      Button(
+          tft, context, {posX, posY}, size,
+          [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
+          {
+            ctx->currentEdit->setValue(EditableValues::LOG_DATA);
+          },
+          "LOG_DATA", ORANGE,
+          [](ButtonContext *ctx) -> bool
+          { return ctx->currentEdit->getValue() == EditableValues::LOG_DATA; }));
 
   // Add and Clear
+  posY += 10;
   posY += size.y + offset;
   posX = start.x;
   buttons.push_back(
@@ -179,7 +192,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
 
   //Start / Stop
   posY += size.y + offset;
-  posX = start.x;
+  posX = start.x + 3 * (size.x + offset);
   buttons.push_back(
       //buttons[14] =
       Button(

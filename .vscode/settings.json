@@ -1,5 +1,18 @@
 {
     "files.associations": {
-        "vector": "cpp"
+        "vector": "cpp",
+        "deque": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "list": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "associative_base": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "limits": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "valarray": "cpp"
     }
 }

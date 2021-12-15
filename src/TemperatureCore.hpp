@@ -7,10 +7,10 @@ class TemperatureCore
 {
 private:
   TemperatureCurve *curve = nullptr;
-  DataLogger *dataLogger = nullptr;
   int systemT = 0;
   bool started = false;
   int startedAt = 0;
+  DataLogger *dataLogger = nullptr;
 
 private:
   int getTmpForRmp(int from, int to, int in, int starting, int t)
@@ -28,7 +28,7 @@ public:
 
   DataLogger *getDataLogger()
   {
-    this->dataLogger;
+    return this->dataLogger;
   }
 
   TemperatureCurve *getTemperatureCurve()

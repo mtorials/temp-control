@@ -14,10 +14,6 @@ Button::Button(
   this->pos = pos;
   this->color = color;
   this->label = label;
-
-  // TODO remove
-  //Serial.print("addr in constructor"); Serial.println((long)currentlyEditing);
-  //currentlyEditing->setValue(EditableValues::Rmp1); // working!
 }
 
 bool Button::checkIfPointInButton(Point point)

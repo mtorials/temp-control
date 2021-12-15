@@ -33,15 +33,16 @@ void Display::drawTempCurve(TemperatureCore *core)
   // Draw Log graph
   if (controlUI->currentlyEditing->getValue() == EditableValues::LOG_DATA)
   {
+    // TODO remove
+    // Serial.print("Value hi of Datalogger: ");
+    // Serial.println(this->core->getDataLogger()->hi);
+    // Serial.print("[Display.cpp] Datalogger is null: ");
+    // Serial.println(this->core->getDataLogger() == nullptr);
+    // Serial.print("[Display.cpp] Datalogger->getValues() is null: ");
+    // Serial.println(this->core->getDataLogger()->getValues() == nullptr);
     for (int t = 0; t < tMax; t++)
     {
       int x = ((float)t / (float)tMax) * (end.x - start.x);
-      // TODO remove
-      // Serial.println(this->core->getDataLogger()->getTempForT(t));
-      /*Serial.println(this->core != nullptr);
-      Serial.println(this->core->getDataLogger() != nullptr);
-      Serial.println(this->core->getDataLogger()->getValues() != nullptr);
-      Serial.println();*/
       int y = ((float)this->core->getDataLogger()->getTempForT(t)) / ((float)(this->core->getMaxTemp() + LOG_GRAPH_MARGIN)) * (end.y - start.y);
       y = end.y - y;
       Tft.fillRect(x, y, pointSize, pointSize, GRAPH_LOG_COLOR);

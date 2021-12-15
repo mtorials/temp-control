@@ -47,8 +47,8 @@ void setup()
 
   display->begin();
 
-  Serial.println();
-  Serial.println(core->getDataLogger() != nullptr);
+  Serial.print("[main.cpp] Data logger is null: ");
+  Serial.println(core->getDataLogger() == nullptr);
   Serial.println();
 }
 
@@ -81,13 +81,11 @@ void loop()
     display->update();
   }
   display->loop();
-  oldStatus = status;
-  oldTime = core->getTime();
   if (core->running())
   {
     manageTemperature();
     // Log data
-    if (status.currentTempereature != oldStatus.currentTempereature)
+    if (core->getTime() != oldTime)
     {
       core->getDataLogger()->setTempForT(core->getTime(), status.currentTempereature);
     }
@@ -104,4 +102,6 @@ void loop()
   {
     digitalWrite(OUTPUT_PIN, LOW);
   }
+  oldStatus = status;
+  oldTime = core->getTime();
 }

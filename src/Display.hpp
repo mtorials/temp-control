@@ -20,7 +20,7 @@ namespace
 class Display
 {
 private:
-  TemperatureCore *core;
+  TemperatureCore *core = nullptr;
   Status *status;
   ControlUI *controlUI;
   TSPoint getTouchPoint();

@@ -3,9 +3,8 @@
 
 DataLogger::DataLogger(int duration)
 {
-  this->size = duration;
-  this->values = (short *)calloc(size, sizeof(short));
-  Serial.println("trying to null");
+  // Serial.println("trying to null");
+  reset(size);
   // for (int i = 0; i < duration; i++)
   // {
   //   this->values[i] = 0;
@@ -27,15 +26,13 @@ void DataLogger::setTempForT(int t, short temp)
   this->values[t] = temp;
 }
 
-void DataLogger::reset()
+void DataLogger::reset(int duration)
 {
-  Serial.println("Resetting data logger.");
-  Serial.print("values pointer is null: ");
-  Serial.println(this->values == nullptr);
-  for (int i = 0; i < this->size; i++)
-  {
-    this->values[i] = 0;
-  }
+  // Serial.println("Resetting data logger.");
+  // Serial.print("values pointer is null: ");
+  // Serial.println(this->values == nullptr);
+  this->size = duration;
+  this->values = (short *)calloc(size, sizeof(short));
 }
 
 short DataLogger::getTempForT(int t)

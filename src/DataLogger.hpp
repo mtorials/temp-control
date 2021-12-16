@@ -17,5 +17,5 @@ public:
     return this->values;
   }
 
-  void reset();
+  void reset(int duration);
 };

@@ -30,7 +30,7 @@ void TemperatureCore::start()
     return;
   this->startedAt = this->systemT;
   this->started = true;
-  this->getDataLogger()->reset();
+  this->getDataLogger()->reset(getDuration());
 }
 
 void TemperatureCore::stop()

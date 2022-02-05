@@ -110,7 +110,7 @@ void Display::loop()
 {
   TSPoint p = getTouchPoint();
   // Serial.println(p.z);
-  if (p.z < 580)
+  if (p.z < TOUCH_THRESHOLD)
     return;
   for (auto btn : controlUI->getButtons())
   {
@@ -208,13 +208,29 @@ void Display::drawTemperatures()
   Tft.print(this->core->getTemperatureCurve()->rmp3);
   Tft.print("min");
 
+  const int bigY = 400;
+  // clear area
+  Tft.fillRect(offset, bigY, 150, 40, BLACK);
+  // print status big
+  Tft.setCursor(offset, bigY);
+  Tft.setTextSize(2);
+  Tft.print("T:     ");
+  Tft.print(this->status->currentTempereature);
+  Tft.print(" C");
+  Tft.setCursor(offset, bigY + 20);
+  Tft.print("T_SET: ");
+  Tft.print(getTemperatureCore()->getTemperature());
+  Tft.print(" C");
+
+  Tft.setTextSize(2);
+
   // clear bottom text
   Tft.fillRect(0, Tft.LCD_HEIGHT - 20, Tft.LCD_WIDTH, 20, BG_COLOR);
   // draw bottom text
   Tft.setCursor(offset, Tft.LCD_HEIGHT - 20);
   if (this->core->running())
   {
-    Tft.print("Running. Time remaining: ");
+    Tft.print("Running. Remaining ");
     Tft.print(this->core->getRemainingTime());
     Tft.print("min");
   }

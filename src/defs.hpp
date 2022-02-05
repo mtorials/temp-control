@@ -6,5 +6,5 @@
 #define OUTPUT_PIN 31
 #define TEMP_THRESHOLD 10
 
-#define LABEL_SIZE 0.9
+#define LABEL_SIZE 1.5
 #define LOG_GRAPH_MARGIN 10

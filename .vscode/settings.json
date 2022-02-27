@@ -14,6 +14,8 @@
         "queue": "cpp",
         "stack": "cpp",
         "valarray": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "sstream": "cpp",
+        "string": "cpp"
     }
 }

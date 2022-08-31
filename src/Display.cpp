@@ -18,7 +18,8 @@ TSPoint Display::getTouchPoint()
   return p;
 }
 
-void Display::drawTempCurve(TemperatureCore *core)
+// Default log_data -> nothing active
+void Display::drawTempCurve(TemperatureCore *core, EditableValues activeValue = LOG_DATA)
 {
   Point start = {0, 70};
   Point end = {Tft.LCD_WIDTH, 185};
@@ -57,7 +58,12 @@ void Display::drawTempCurve(TemperatureCore *core)
       int y = ((float)this->core->getTemperatureForT(t) / (float)this->core->getMaxTemp()) * (end.y - start.y);
       // flip y axis
       y = end.y - y;
-      Tft.fillRect(x, y, pointSize, pointSize, GRAPH_COLOR);
+      // Draw as active or not
+      if (activeValue == Tmp0) activeValue = T1;
+      if (activeValue == Tmp1) activeValue = T2;
+      if (activeValue == Tmp2) activeValue = T3;
+      if (!core->getCurvePart(t) == activeValue) Tft.fillRect(x, y, pointSize, pointSize, GRAPH_COLOR);
+      else Tft.fillRect(x, y, pointSize, pointSize, GRAPH_ACTIVE_COLOR);
     }
   }
 
@@ -128,7 +134,7 @@ void Display::update()
 {
   // Tft.fillScreen(BG_COLOR);
   drawTemperatures();
-  drawTempCurve(this->core);
+  drawTempCurve(this->core, this->controlUI->currentlyEditing->getValue());
   drawButtons();
 }
 

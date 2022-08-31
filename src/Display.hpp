@@ -24,7 +24,7 @@ private:
   Status *status;
   ControlUI *controlUI;
   TSPoint getTouchPoint();
-  void drawTempCurve(TemperatureCore *core);
+  void drawTempCurve(TemperatureCore *core, EditableValues activeValue);
   void drawTemperatures();
   void drawButtons();
 

@@ -1,5 +1,6 @@
 #include "TemperatureCore.hpp"
 #include "DataLogger.hpp"
+#include "EditStatus.hpp"
 #include <Arduino.h>
 
 int TemperatureCore::getMaxTemp()
@@ -79,3 +80,13 @@ int TemperatureCore::getRemainingTime()
   }
   return r;
 }
+
+EditableValues TemperatureCore::getCurvePart(int t) {
+  if (t < curve->t1) return EditableValues::T1;
+  if (t < curve->t1 + curve->rmp1) return EditableValues::Rmp1;
+  if (t < curve->t1 + curve->rmp1 + curve->t2) return EditableValues::T2;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2) return EditableValues::Rmp2;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3) return EditableValues::T3;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3 + curve->rmp3) return EditableValues::Rmp3;
+}
+

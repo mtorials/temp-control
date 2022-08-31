@@ -2,6 +2,7 @@
 
 #include "TemperatureCurve.hpp"
 #include "DataLogger.hpp"
+#include "EditStatus.hpp"
 
 class TemperatureCore
 {
@@ -42,6 +43,7 @@ public:
   }
 
   int getMaxTemp();
+  EditableValues getCurvePart(int t);
 
   void setTime(int t);
   int getTime();

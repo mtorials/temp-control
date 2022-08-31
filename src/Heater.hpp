@@ -40,7 +40,7 @@ public:
       // I = [-20; 0]
       percentage = (-0.045) * delta + 0.1;
     }
-    Serial.print("Heating set to: %");
-    Serial.println(percentage);
+    // Serial.print("Heating set to: %");
+    // Serial.println(percentage);
   }
 };

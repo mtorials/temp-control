@@ -89,20 +89,13 @@ void loop()
 {
   core->setTime(millis() / MILLIS_IN_ONE_MIN);
   status.currentTempereature = mcp.readThermocouple();
-  if (
-      oldStatus.currentTempereature != status.currentTempereature ||
-      oldStatus.heating != status.heating ||
-      (core->getTime() != oldTime))
-  {
-    Serial.println(status.currentTempereature);
-    display->update();
-    heater->setHeating(status.currentTempereature, core->getTemperature());
-  }
-  display->loop();
+
+  // Heater
   if (core->running())
   {
     //manageTemperature();
     // Log data
+    heater->setHeating(status.currentTempereature, core->getTemperature());
     heater->loop(&status);
     if (core->getTime() != oldTime)
     {
@@ -113,6 +106,19 @@ void loop()
   {
     status.heating = false;
   }
+
+  // Display update
+  if (
+      oldStatus.currentTempereature != status.currentTempereature ||
+      oldStatus.heating != status.heating ||
+      (core->getTime() != oldTime))
+  {
+    Serial.println(status.currentTempereature);
+    display->update();
+  }
+  display->loop();
+  
+  // Output
   if (status.heating)
   {
     digitalWrite(OUTPUT_PIN, HIGH);
@@ -121,6 +127,7 @@ void loop()
   {
     digitalWrite(OUTPUT_PIN, LOW);
   }
+
   oldStatus = status;
   oldTime = core->getTime();
 

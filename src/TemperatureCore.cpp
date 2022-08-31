@@ -83,11 +83,12 @@ int TemperatureCore::getRemainingTime()
 
 EditableValues TemperatureCore::getCurvePart(int t) {
   if (t < curve->t1) return EditableValues::T1;
-  if (t < curve->t1 + curve->rmp1) return EditableValues::Rmp1;
-  if (t < curve->t1 + curve->rmp1 + curve->t2) return EditableValues::T2;
-  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2) return EditableValues::Rmp2;
-  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3) return EditableValues::T3;
-  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3 + curve->rmp3) return EditableValues::Rmp3;
+  else if (t < curve->t1 + curve->rmp1) return EditableValues::Rmp1;
+  else if (t < curve->t1 + curve->rmp1 + curve->t2) return EditableValues::T2;
+  else if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2) return EditableValues::Rmp2;
+  else if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3) return EditableValues::T3;
+  else if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3 + curve->rmp3) return EditableValues::Rmp3;
+  else Serial.println("Cant get part fot t...");
 }
 
 int TemperatureCore::getValueForPart(EditableValues part) {

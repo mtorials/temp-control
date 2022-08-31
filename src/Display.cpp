@@ -32,6 +32,22 @@ void Display::drawTempCurve(TemperatureCore *core, EditableValues activeValue = 
   TemperatureCurve *curve = this->core->getTemperatureCurve();
   int tMax = this->core->getDuration();
 
+  // Draw normal graph
+  for (int t = 0; t < tMax; t++)
+  {
+      int x = ((float)t / (float)tMax) * (end.x - start.x);
+      int y = ((float)this->core->getTemperatureForT(t) / (float)this->core->getMaxTemp()) * (end.y - start.y);
+      // flip y axis
+      y = end.y - y;
+      // Draw as active or not
+      if (activeValue == Tmp0) activeValue = T1;
+      else if (activeValue == Tmp1) activeValue = T2;
+      else if (activeValue == Tmp2) activeValue = T3;
+
+      if (core->getCurvePart(t) == activeValue) Tft.fillRect(x, y, pointSize, pointSize, GRAPH_ACTIVE_COLOR);
+      else Tft.fillRect(x, y, pointSize, pointSize, GRAPH_COLOR);
+  }
+
   // Draw Log graph
   if (controlUI->currentlyEditing->getValue() == EditableValues::LOG_DATA)
   {
@@ -50,23 +66,7 @@ void Display::drawTempCurve(TemperatureCore *core, EditableValues activeValue = 
       Tft.fillRect(x, y, pointSize, pointSize, GRAPH_LOG_COLOR);
     }
   }
-  // Draw normal graph
-  else
-  {
-    for (int t = 0; t < tMax; t++)
-    {
-      int x = ((float)t / (float)tMax) * (end.x - start.x);
-      int y = ((float)this->core->getTemperatureForT(t) / (float)this->core->getMaxTemp()) * (end.y - start.y);
-      // flip y axis
-      y = end.y - y;
-      // Draw as active or not
-      if (activeValue == Tmp0) activeValue = T1;
-      if (activeValue == Tmp1) activeValue = T2;
-      if (activeValue == Tmp2) activeValue = T3;
-      if (!core->getCurvePart(t) == activeValue) Tft.fillRect(x, y, pointSize, pointSize, GRAPH_COLOR);
-      else Tft.fillRect(x, y, pointSize, pointSize, GRAPH_ACTIVE_COLOR);
-    }
-  }
+
 
   // draw time indicator
   if (core->running())
@@ -149,12 +149,22 @@ void Display::drawTemperatures()
   // clear area
   Tft.fillRect(0, 0, Tft.LCD_WIDTH, 60 + offset, BG_COLOR);
 
-  Tft.setCursor(offset, offset);
+  // Heating
+  if (status->heating) {
+    Tft.fillRect(Tft.LCD_WIDTH - offset, offset, offset, offset, RED);
+  }
 
-  EditableValues active = this->controlUI->currentlyEditing->getValue();
-  Tft.print(this->getTemperatureCore()->getValueForPart(active));
-  if (active == Tmp0 || active == Tmp1 || active == Tmp2) Tft.print(" C");
-  else Tft.print(" min");
+  Tft.setCursor(offset, offset);
+  Tft.setTextSize(2);
+  
+  if (this->controlUI->currentlyEditing->getValue() != EditableValues::LOG_DATA) {
+    EditableValues active = this->controlUI->currentlyEditing->getValue();
+    Tft.print(this->getTemperatureCore()->getValueForPart(active));
+    if (active == Tmp0 || active == Tmp1 || active == Tmp2) Tft.print(" C");
+    else Tft.print(" min");
+  } else {
+    Tft.print("Logged Data:");
+  }
 
   ////////////
   // Bottom

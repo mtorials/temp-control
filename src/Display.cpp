@@ -1,6 +1,7 @@
 #include "Display.hpp"
 #include "Colors.hpp"
 #include "defs.hpp"
+#include "EditStatus.hpp"
 
 Display::Display(TemperatureCore *core, Status *status)
 {
@@ -146,73 +147,16 @@ void Display::drawTemperatures()
   // clear area
   Tft.fillRect(0, 0, Tft.LCD_WIDTH, 60 + offset, BG_COLOR);
 
-  // draw temps
   Tft.setCursor(offset, offset);
-  Tft.setTextSize(1);
-  Tft.print("Tmp: ");
-  Tft.print(this->status->currentTempereature);
-  Tft.print("C");
-  Tft.setCursor(offset + spacing, offset);
-  Tft.print("T_set: ");
-  Tft.print(this->core->getTemperature());
-  Tft.print("C");
-  Tft.setCursor(offset + 2 * spacing, offset);
-  if (status->heating)
-  {
-    Tft.print("Heating...");
-  }
-  else
-  {
-    Tft.print("-");
-  }
 
-  Tft.setCursor(offset, offset + 10);
-  Tft.print("t: ");
-  Tft.print(this->core->getTime());
-  Tft.print("min");
-  Tft.setCursor(offset + spacing, offset + 10);
-  Tft.print("Duration: ");
-  Tft.print(this->core->getDuration());
-  Tft.print("min");
-
-  Tft.setCursor(offset, offset + 20);
-  Tft.print("Tmp_0: ");
-  Tft.print(this->core->getTemperatureCurve()->tmp0);
-  Tft.print("C");
-  Tft.setCursor(offset + spacing, offset + 20);
-  Tft.print("Tmp_1: ");
-  Tft.print(this->core->getTemperatureCurve()->tmp1);
-  Tft.print("C");
-  Tft.setCursor(offset + 2 * spacing, offset + 20);
-  Tft.print("Tmp_2: ");
-  Tft.print(this->core->getTemperatureCurve()->tmp2);
-  Tft.print("C");
-
-  Tft.setCursor(offset, offset + 30);
-  Tft.print("t_1: ");
-  Tft.print(this->core->getTemperatureCurve()->t1);
-  Tft.print("min");
-  Tft.setCursor(offset + spacing, offset + 30);
-  Tft.print("t_2: ");
-  Tft.print(this->core->getTemperatureCurve()->t2);
-  Tft.print("min");
-  Tft.setCursor(offset + 2 * spacing, offset + 30);
-  Tft.print("t_3: ");
-  Tft.print(this->core->getTemperatureCurve()->t3);
-  Tft.print("min");
-
-  Tft.setCursor(offset, offset + 40);
-  Tft.print("rmp_1: ");
-  Tft.print(this->core->getTemperatureCurve()->rmp1);
-  Tft.print("min");
-  Tft.setCursor(offset + spacing, offset + 40);
-  Tft.print("rmp_2: ");
-  Tft.print(this->core->getTemperatureCurve()->rmp2);
-  Tft.print("min");
-  Tft.setCursor(offset + spacing * 2, offset + 40);
-  Tft.print("rmp_3: ");
-  Tft.print(this->core->getTemperatureCurve()->rmp3);
-  Tft.print("min");
+  EditableValues active = this->controlUI->currentlyEditing->getValue();
+  Tft.print(this->getTemperatureCore()->getValueForPart(active));
+  if (active == Tmp0 || active == Tmp1 || active == Tmp2) Tft.print(" C");
+  else Tft.print(" min");
+  
+  ////////////
+  // Bottom
+  ////////////
 
   const int bigY = 400;
   // clear area
@@ -245,3 +189,111 @@ void Display::drawTemperatures()
     Tft.print("Ready.");
   }
 }
+
+// void Display::drawTemperatures()
+// {
+//   int offset = 10;
+//   int spacing = 100;
+
+//   // clear area
+//   Tft.fillRect(0, 0, Tft.LCD_WIDTH, 60 + offset, BG_COLOR);
+
+//   // draw temps
+//   Tft.setCursor(offset, offset);
+//   Tft.setTextSize(1);
+//   Tft.print("Tmp: ");
+//   Tft.print(this->status->currentTempereature);
+//   Tft.print("C");
+//   Tft.setCursor(offset + spacing, offset);
+//   Tft.print("T_set: ");
+//   Tft.print(this->core->getTemperature());
+//   Tft.print("C");
+//   Tft.setCursor(offset + 2 * spacing, offset);
+//   if (status->heating)
+//   {
+//     Tft.print("Heating...");
+//   }
+//   else
+//   {
+//     Tft.print("-");
+//   }
+
+//   Tft.setCursor(offset, offset + 10);
+//   Tft.print("t: ");
+//   Tft.print(this->core->getTime());
+//   Tft.print("min");
+//   Tft.setCursor(offset + spacing, offset + 10);
+//   Tft.print("Duration: ");
+//   Tft.print(this->core->getDuration());
+//   Tft.print("min");
+
+//   Tft.setCursor(offset, offset + 20);
+//   Tft.print("Tmp_0: ");
+//   Tft.print(this->core->getTemperatureCurve()->tmp0);
+//   Tft.print("C");
+//   Tft.setCursor(offset + spacing, offset + 20);
+//   Tft.print("Tmp_1: ");
+//   Tft.print(this->core->getTemperatureCurve()->tmp1);
+//   Tft.print("C");
+//   Tft.setCursor(offset + 2 * spacing, offset + 20);
+//   Tft.print("Tmp_2: ");
+//   Tft.print(this->core->getTemperatureCurve()->tmp2);
+//   Tft.print("C");
+
+//   Tft.setCursor(offset, offset + 30);
+//   Tft.print("t_1: ");
+//   Tft.print(this->core->getTemperatureCurve()->t1);
+//   Tft.print("min");
+//   Tft.setCursor(offset + spacing, offset + 30);
+//   Tft.print("t_2: ");
+//   Tft.print(this->core->getTemperatureCurve()->t2);
+//   Tft.print("min");
+//   Tft.setCursor(offset + 2 * spacing, offset + 30);
+//   Tft.print("t_3: ");
+//   Tft.print(this->core->getTemperatureCurve()->t3);
+//   Tft.print("min");
+
+//   Tft.setCursor(offset, offset + 40);
+//   Tft.print("rmp_1: ");
+//   Tft.print(this->core->getTemperatureCurve()->rmp1);
+//   Tft.print("min");
+//   Tft.setCursor(offset + spacing, offset + 40);
+//   Tft.print("rmp_2: ");
+//   Tft.print(this->core->getTemperatureCurve()->rmp2);
+//   Tft.print("min");
+//   Tft.setCursor(offset + spacing * 2, offset + 40);
+//   Tft.print("rmp_3: ");
+//   Tft.print(this->core->getTemperatureCurve()->rmp3);
+//   Tft.print("min");
+
+//   const int bigY = 400;
+//   // clear area
+//   Tft.fillRect(offset, bigY, 150, 40, BLACK);
+//   // print status big
+//   Tft.setCursor(offset, bigY);
+//   Tft.setTextSize(2);
+//   Tft.print("T:     ");
+//   Tft.print(this->status->currentTempereature);
+//   Tft.print(" C");
+//   Tft.setCursor(offset, bigY + 20);
+//   Tft.print("T_SET: ");
+//   Tft.print(getTemperatureCore()->getTemperature());
+//   Tft.print(" C");
+
+//   Tft.setTextSize(2);
+
+//   // clear bottom text
+//   Tft.fillRect(0, Tft.LCD_HEIGHT - 20, Tft.LCD_WIDTH, 20, BG_COLOR);
+//   // draw bottom text
+//   Tft.setCursor(offset, Tft.LCD_HEIGHT - 20);
+//   if (this->core->running())
+//   {
+//     Tft.print("Running. Remaining ");
+//     Tft.print(this->core->getRemainingTime());
+//     Tft.print("min");
+//   }
+//   else
+//   {
+//     Tft.print("Ready.");
+//   }
+// }

@@ -44,6 +44,7 @@ public:
 
   int getMaxTemp();
   EditableValues getCurvePart(int t);
+  int getValueForPart(EditableValues part);
 
   void setTime(int t);
   int getTime();

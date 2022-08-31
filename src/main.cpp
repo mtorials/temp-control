@@ -24,6 +24,14 @@ Heater * heater;
 Status status;
 Display *display;
 
+// predetermained touch calibration
+TSConfigData configData = {
+    .xMin = 58,
+    .xMax = 975,
+    .yMin = 39,
+    .yMax = 979,
+};
+
 void setup()
 {
   Serial.begin(9600);
@@ -34,6 +42,8 @@ void setup()
   if (!mcp.begin(I2C_ADDRESS))
   {
     Serial.println("Sensor not found. Check wiring!");
+    Tft.begin();
+    Tft.println("Sensnor not found. Check wiring!");
     while (1)
       ;
   }
@@ -48,6 +58,9 @@ void setup()
   heater = new Heater();
   core = new TemperatureCore(&curve);
   display = new Display(core, &status);
+
+  // Load touch calibration
+  Tft.setTsConfigData(configData);
 
   display->begin();
 
@@ -110,4 +123,17 @@ void loop()
   }
   oldStatus = status;
   oldTime = core->getTime();
+
+// Very bad for performance
+#ifdef CALIBRATION
+  if (!Serial.readString().startsWith("cal"))
+    return;
+  auto data = Tft.getTsConfigData();
+  Serial.println("Display Config!");
+  Serial.println(data.xMin);
+  Serial.println(data.xMax);
+  Serial.println(data.yMin);
+  Serial.println(data.yMax);
+  Serial.println("---------------------");
+#endif
 }

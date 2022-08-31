@@ -24,7 +24,7 @@ private:
   Status *status;
   ControlUI *controlUI;
   TSPoint getTouchPoint();
-  void drawTempCurve(TemperatureCore *core);
+  void drawTempCurve(TemperatureCore *core, EditableValues activeValue);
   void drawTemperatures();
   void drawButtons();
 
@@ -33,6 +33,7 @@ public:
   Waveshare_ILI9486 *getTft();
   TemperatureCore *getTemperatureCore();
   ControlUI *getControlUI();
+  EditableValues oldEditState;
   void begin();
   void loop();
   void update();

@@ -5,7 +5,7 @@
 ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
 {
   Point size = {50, 50};
-  Point start = {25, 215};
+  Point start = {25, 205};
   short posY = start.y;
   short posX = start.x;
   short offset = 5;
@@ -14,7 +14,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
   Serial.println((long)&currentlyEditing);
   Serial.println(currentlyEditing->getValue());
 
-  //this->buttons = (Button *)calloc(BUTTON_COUNT, sizeof(Button));
+  // this->buttons = (Button *)calloc(BUTTON_COUNT, sizeof(Button));
 
   this->context = new ButtonContext({
       core,
@@ -25,7 +25,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
   // Selection
   posX = start.x;
   buttons.push_back(
-      //buttons[0] =
+      // buttons[0] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -39,7 +39,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[1] =
+      // buttons[1] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -53,7 +53,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[2] =
+      // buttons[2] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -67,7 +67,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[3] =
+      // buttons[3] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -76,7 +76,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           { return ctx->currentEdit->getValue() == EditableValues::T1; }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[4] =
+      // buttons[4] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -87,7 +87,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
   posY += size.y + offset;
   posX = start.x;
   buttons.push_back(
-      //buttons[5] =
+      // buttons[5] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -97,7 +97,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
 
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[6] =
+      // buttons[6] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -106,7 +106,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           { return ctx->currentEdit->getValue() == EditableValues::Rmp1; }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[7] =
+      // buttons[7] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -115,7 +115,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           { return ctx->currentEdit->getValue() == EditableValues::Rmp2; }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[8] =
+      // buttons[8] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -125,7 +125,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           { return ctx->currentEdit->getValue() == EditableValues::Rmp3; }));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[15] =
+      // buttons[15] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -137,11 +137,11 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           { return ctx->currentEdit->getValue() == EditableValues::LOG_DATA; }));
 
   // Add and Clear
-  posY += 10;
+  // posY += 10;
   posY += size.y + offset;
   posX = start.x;
   buttons.push_back(
-      //buttons[9] =
+      // buttons[9] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -151,7 +151,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "+500", GREEN));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[10] =
+      // buttons[10] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -161,7 +161,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "+100", GREEN));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[11] =
+      // buttons[11] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -171,7 +171,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "+60", GREEN));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[12] =
+      // buttons[12] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -181,7 +181,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "+10", GREEN));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[13] =
+      // buttons[13] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -190,11 +190,11 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           },
           "0", GREEN));
 
-  //Start / Stop
+  // Start / Stop
   posY += size.y + offset;
   posX = start.x + 3 * (size.x + offset);
   buttons.push_back(
-      //buttons[14] =
+      // buttons[14] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)
@@ -202,7 +202,7 @@ ControlUI::ControlUI(Waveshare_ILI9486 *tft, TemperatureCore *core)
           "Start", ORANGE));
   posX += offset + size.x;
   buttons.push_back(
-      //buttons[15] =
+      // buttons[15] =
       Button(
           tft, context, {posX, posY}, size,
           [](Waveshare_ILI9486 *tft, ButtonContext *ctx)

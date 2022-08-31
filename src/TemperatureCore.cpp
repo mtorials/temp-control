@@ -1,5 +1,6 @@
 #include "TemperatureCore.hpp"
 #include "DataLogger.hpp"
+#include "EditStatus.hpp"
 #include <Arduino.h>
 
 int TemperatureCore::getMaxTemp()
@@ -79,3 +80,49 @@ int TemperatureCore::getRemainingTime()
   }
   return r;
 }
+
+EditableValues TemperatureCore::getCurvePart(int t) {
+  if (t < curve->t1) return EditableValues::T1;
+  if (t < curve->t1 + curve->rmp1) return EditableValues::Rmp1;
+  if (t < curve->t1 + curve->rmp1 + curve->t2) return EditableValues::T2;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2) return EditableValues::Rmp2;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3) return EditableValues::T3;
+  if (t < curve->t1 + curve->rmp1 + curve->t2 + curve->rmp2 + curve->t3 + curve->rmp3) return EditableValues::Rmp3;
+}
+
+int TemperatureCore::getValueForPart(EditableValues part) {
+switch (part) {
+    case Tmp0:
+      return (curve->tmp0);
+      break;
+    case Tmp1:
+      return (curve->tmp1);
+      break;
+    case Tmp2:
+      return (curve->tmp2);
+      break;
+    case T1:
+      return (curve->t1);
+      break;
+    case T2:
+      return (curve->t2);
+      break;
+    case T3:
+      return (curve->t3);
+      break;
+    case Rmp1:
+      return (curve->rmp1);
+      break;
+    case Rmp2:
+      return (curve->rmp2);
+      break;
+    case Rmp3:
+      return (curve->rmp3);
+      break;
+
+    default:
+      Serial.println("ERROR");
+      break;
+    }
+}
+

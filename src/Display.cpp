@@ -136,7 +136,9 @@ void Display::update()
   // Tft.fillScreen(BG_COLOR);
   drawTemperatures();
   drawTempCurve(this->core, this->controlUI->currentlyEditing->getValue());
-  drawButtons();
+  if (oldEditState != controlUI->currentlyEditing->getValue()) {
+      drawButtons();
+  }
 }
 
 void Display::drawTemperatures()
@@ -153,7 +155,7 @@ void Display::drawTemperatures()
   Tft.print(this->getTemperatureCore()->getValueForPart(active));
   if (active == Tmp0 || active == Tmp1 || active == Tmp2) Tft.print(" C");
   else Tft.print(" min");
-  
+
   ////////////
   // Bottom
   ////////////

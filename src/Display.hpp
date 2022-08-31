@@ -33,6 +33,7 @@ public:
   Waveshare_ILI9486 *getTft();
   TemperatureCore *getTemperatureCore();
   ControlUI *getControlUI();
+  EditableValues oldEditState;
   void begin();
   void loop();
   void update();

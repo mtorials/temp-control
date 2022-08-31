@@ -6,6 +6,7 @@
 #include "Adafruit_MCP9600.h"
 
 #include "Display.hpp"
+#include "Heater.hpp"
 #include "TemperatureCurve.hpp"
 #include "TemperatureCore.hpp"
 #include "Status.hpp"
@@ -17,6 +18,8 @@ Adafruit_MCP9600 mcp;
 
 TemperatureCurve curve;
 TemperatureCore *core;
+
+Heater * heater;
 
 Status status;
 Display *display;
@@ -42,6 +45,7 @@ void setup()
   // display.update();
   // core.start();
 
+  heater = new Heater();
   core = new TemperatureCore(&curve);
   display = new Display(core, &status);
 
@@ -55,7 +59,7 @@ void setup()
 Status oldStatus = status;
 int oldTime = core->getTime();
 
-void manageTemperature()
+/* void manageTemperature()
 {
   int delta = (status.currentTempereature - core->getTemperature());
   if (delta > 0)
@@ -67,7 +71,7 @@ void manageTemperature()
     status.heating = true;
   }
 }
-
+ */
 void loop()
 {
   core->setTime(millis() / MILLIS_IN_ONE_MIN);
@@ -79,12 +83,14 @@ void loop()
   {
     Serial.println(status.currentTempereature);
     display->update();
+    heater->setHeating(status.currentTempereature, core->getTemperature());
   }
   display->loop();
   if (core->running())
   {
-    manageTemperature();
+    //manageTemperature();
     // Log data
+    heater->loop(&status);
     if (core->getTime() != oldTime)
     {
       core->getDataLogger()->setTempForT(core->getTime(), status.currentTempereature);

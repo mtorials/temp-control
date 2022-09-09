@@ -1,3 +1,4 @@
-# Temperature Control Unit - An Arduinoproject to control a dumb ceramic oven
+# Temperature Control for an ceramic oven.
 
-<small>Created by mtorials in cooperation with UniversumGames</small>
+This is the code for a temperature control unit for an old ceramic oven. With this control unit it is possible to define temperature curves for the oven to follow. It uses a touch display as user input and logs the expected and real temperatures as a curve on the screen.
+
